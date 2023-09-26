@@ -12,6 +12,8 @@ app.get('/', (req, res) => {
   res.send('Hello, POOP TypeScript with Express!');
 });
 
+//TEST
+
 app.use('/job', jobRouter)
 
 app.listen(PORT, () => {
