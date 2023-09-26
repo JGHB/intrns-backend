@@ -1,3 +1,4 @@
+import { NotFoundError } from "../errors/NotFoundError";
 import { Job } from "../models/Job";
 import { JobService } from "../services/job.service";
 import { NextFunction, Request, Response } from "express";
@@ -26,6 +27,9 @@ export class JobController {
             const job = await JobController.jobService.getJobById(jobId);
             return res.send(job)
         } catch (err) {
+            if (err instanceof NotFoundError) {
+                return res.status(404).send({ error: err.message });
+            }
             return next(err);
         }
     }
@@ -55,6 +59,9 @@ export class JobController {
             const updatedJob = await JobController.jobService.updateJob(jobId, jobRequest)
             return res.status(200).send(updatedJob)
         } catch (err) {
+            if (err instanceof NotFoundError) {
+                return res.status(404).send({ error: err.message });
+            }
             return next(err);
         }
     }
@@ -69,6 +76,9 @@ export class JobController {
             JobController.jobService.deleteJob(jobId)
             return res.sendStatus(204)
         } catch (err) {
+            if (err instanceof NotFoundError) {
+                return res.status(404).send({ error: err.message });
+            }
             return next(err)
         }
     }

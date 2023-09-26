@@ -1,5 +1,6 @@
 import { NextFunction } from "express";
 import { Job } from "../models/Job";
+import { NotFoundError } from "../errors/NotFoundError";
 
 let exampleJobs: Job[] = [
     {id: "0", title: "Job 1", description: "THIS IS AN EXAMPLE JOB"},
@@ -24,19 +25,19 @@ export class JobService {
 
     getJobById(id: string): Job {
         const job = exampleJobs.find(job => job.id === id);
-        if(!job) throw new Error('Job not found.');
+        if(!job) throw new NotFoundError('Job not found.');
         return job;
     }
 
     deleteJob(id: string): void {
         const index = exampleJobs.findIndex(job => job.id === id)
-        if(index === -1) throw new Error ('Job not found')
+        if(index === -1) throw new NotFoundError('Job not found.');
         exampleJobs.splice(index, 1)
     }
 
     updateJob(id: string, updatedJob: Job): Job {
         const index = exampleJobs.findIndex(job => job.id === id)
-        if(index === -1) throw new Error ('Job not found')
+        if(index === -1) throw new NotFoundError('Job not found.');
         exampleJobs[index] = updatedJob
         return exampleJobs[index]
     }
